@@ -1,0 +1,34 @@
+<h1 class="display-3 mt-3 mb-4">Редактировать <strong>{{product.title}}</strong></h1>
+
+<form action="/products/edit" method="POST">
+
+  <div class="form-floating mb-3">
+    <input type="text" id="title" name="title" class="form-control" placeholder="Введите название"
+      value="{{ product.title }}">
+    <label for="floatingInput">Название товара</label>
+  </div>
+
+  <div class="form-floating mb-3">
+    <input type="number" id="price" name="price" class="form-control" placeholder="Введите цену"
+      value="{{ product.price }}">
+    <label for="floatingInput">Цена товара</label>
+  </div>
+
+  <div class="form-floating mb-4">
+    <input type="text" id="img" name="img" class="form-control" placeholder="Введите url картинки"
+      value="{{ product.img }}">
+    <label for="floatingInput">URL картинки товара</label>
+  </div>
+
+  <input type="hidden" name="id" value="{{product.id}}">
+  <input type="hidden" name="_csrf" value="{{csurf}}">
+
+  <button class="btn btn-primary mb-2">Редактировать товар</button>
+
+</form>
+
+<form action="/products/remove" method="POST">
+  <input type="hidden" name="id" value="{{ product.id }}">
+  <input type="hidden" name="_csrf" value="{{csurf}}">
+  <button class="btn btn-danger">Удалить товар</button>
+</form>

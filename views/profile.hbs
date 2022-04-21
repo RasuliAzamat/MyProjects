@@ -1,0 +1,22 @@
+<h1 class="display-3 mt-3 mb-4">Профиль</h1>
+
+<div class="row">
+    <div class="col">
+        <form action="/profile" method="POST">
+            <div class="form-floating mb-3">
+                <input type="email" name="email" class="form-control" id="disabledInput" value="{{ user.email }}"
+                    disabled>
+                <label for="disabledInput">Ваш email</label>
+            </div>
+
+            <div class="form-floating mb-4">
+                <input type="text" id="name" name="name" class="form-control" value="{{ user.name }}">
+                <label for="floatingInput">Ваше имя</label>
+            </div>
+
+            <input type="hidden" name="_csrf" value="{{ csurf }}">
+            <button class="btn btn-primary">Изменить данные</button>
+            <a class="btn btn-danger" href="/auth/logout">Выйти из аккаунта</a>
+        </form>
+    </div>
+</div>

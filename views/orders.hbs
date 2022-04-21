@@ -1,0 +1,32 @@
+<h1 class="display-3 mt-3 mb-4">Мои заказы</h1>
+
+{{#if orders.length}}
+<div class="row">
+  <div class="col">
+  {{#each orders}}
+    <div class="card mb-3">
+      <div class="card-header date">
+        {{date}}
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Заказ <small>{{_id}}</small></h5>
+        <p class="card-text">{{user.userId.name}} <em>({{user.userId.email}})</em></p>
+        <ol>
+          {{#each products}}
+          <li>
+            {{product.title}} (x{{count}})
+          </li>
+          {{/each}}
+        </ol>
+
+        <hr>
+
+        <p class="lead">Ценa: <strong class="price">{{price}}</strong></p>
+      </div>
+    </div>
+  {{/each}}
+  </div>
+</div>
+{{else}}
+<p class="lead">Заказов пока нет</p>
+{{/if}}

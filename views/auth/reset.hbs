@@ -1,0 +1,21 @@
+<div class="row">
+
+    <h1 class="display-5 mt-3 mb-4">Восстановить пароль</h1>
+    
+    {{#if error}}
+        <p class="error">{{error}}</p>
+    {{/if}}
+
+    <form action="/auth/reset" method="POST">
+
+        <div class="form-floating mb-3">
+            <input type="email" id="email" name="email" class="form-control" id="floatingInput"
+                placeholder="Введите Email">
+            <label for="floatingInput">Email</label>
+        </div>
+
+        <input type="hidden" name="_csrf" value="{{csurf}}">
+
+        <button class="btn btn-primary">Сбросить</button>
+    </form>
+</div>
