@@ -9,7 +9,7 @@ module.exports = function (oldName, newName, email) {
             <h1>Здравствуйте, ${newName}!</h1>
             <p>Ваши данные были обновлены: имя "${oldName}" изменен "${newName}". Удачного пользования!</p>
             <br />
-            <p>Ссылка на сайт - <a href="${keys.BASE_URL}/products">Магазин товаров</a></p>
+            <p>Ссылка на сайт - <a href="${keys.BASE_URL}/projects">Магазин товаров</a></p>
         `,
     }
 }

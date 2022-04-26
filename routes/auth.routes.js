@@ -9,7 +9,7 @@ const {
     postRegister,
     postReset,
     postPassword,
-} = require('../controllers/auth.contollers')
+} = require('../controllers/auth.controllers')
 const router = Router()
 
 router.get('/login', getLogin)

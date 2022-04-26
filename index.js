@@ -8,10 +8,7 @@ const flash = require('connect-flash')
 const MongoStore = require('connect-mongodb-session')(session)
 
 const homeRoutes = require('./routes/home.routes')
-const cartRoutes = require('./routes/cart.routes')
-const addRoutes = require('./routes/add.routes')
-const ordersRoutes = require('./routes/orders.routes')
-const productsRoutes = require('./routes/products.routes')
+// const addRoutes = require('./routes/add.routes')
 const authRoutes = require('./routes/auth.routes')
 const profileRoutes = require('./routes/profile.routes')
 
@@ -26,6 +23,9 @@ const hbs = exphbs.create({
     defaultLayout: 'main',
     extname: 'hbs',
     helpers: require('./helpers/hbs'),
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+    },
 })
 
 const store = new MongoStore({
@@ -38,6 +38,7 @@ app.set('view engine', 'hbs')
 app.set('views', 'views')
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }))
+
 app.use(
     session({
         secret: keys.SESSION_SECRET,
@@ -52,10 +53,6 @@ app.use(varMiddleware)
 app.use(userMiddleware)
 
 app.use('/', homeRoutes)
-app.use('/add', addRoutes)
-app.use('/products', productsRoutes)
-app.use('/cart', cartRoutes)
-app.use('/orders', ordersRoutes)
 app.use('/auth', authRoutes)
 app.use('/profile', profileRoutes)
 app.use(errorMiddleware)
@@ -65,6 +62,7 @@ const PORT = process.env.PORT || 3000
 async function start() {
     try {
         await mongoose.connect(keys.MONGO_URI, {
+            useUnifiedTopology: true,
             useNewUrlParser: true,
             useFindAndModify: false,
         })

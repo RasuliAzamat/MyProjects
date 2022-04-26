@@ -1,127 +1,50 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container">
-    <a class="navbar-brand" href="/"><p class="h2">MyStore</p></a>
+    <a class="navbar-brand" href="/">
+      <p class="h2">MyProjects</p>
+    </a>
     <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav" style="margin-left: auto;">
-        {{#if isHome}}
-          <li class="nav-item">
-            <a class="nav-link active" href="/">Главная</a>
-          </li>
-        {{else}}
-          <li class="nav-item">
-            <a class="nav-link" href="/">Главная</a>
-          </li>
-        {{/if}}
 
-        {{#if isProducts}}
+        {{#if isAdmin}}
           <li class="nav-item">
-            <a class="nav-link active" href="/products">Товары</a>
-          </li>
-        {{else}}
-          <li class="nav-item">
-            <a class="nav-link" href="/products">Товары</a>
+            <a class="nav-link active" href="/add">Добавить</a>
           </li>
         {{/if}}
 
         {{#if isAuth}}
-          {{#if isAdd}}
-            <li class="nav-item">
-              <a class="nav-link active" href="/add">Добавить</a>
-            </li>
-          {{else}}
-            <li class="nav-item">
-              <a class="nav-link" href="/add">Добавить</a>
-            </li>
-          {{/if}}
-
-          {{#if isCart}}
-            <li class="nav-item">
-              <a class="nav-link active" href="/cart">Корзина</a>
-            </li>
-          {{else}}
-            <li class="nav-item">
-              <a class="nav-link" href="/cart">Корзина</a>
-            </li>
-          {{/if}}
-
-          {{#if isOrder}}
-            <li class="nav-item">
-              <a class="nav-link active" href="/orders">Заказы</a>
-            </li>
-          {{else}}
-            <li class="nav-item">
-              <a class="nav-link" href="/orders">Заказы</a>
-            </li>
-          {{/if}}
-
           {{#if isProfile}}
             <li class="nav-item">
               <a class="nav-link active" href="/profile">Профиль</a>
             </li>
           {{else}}
             <li class="nav-item">
-              <a class="nav-link" href="/profile">Профиль</a>
+              <a class="nav-link" href="/profile">
+                Профиль
+              </a>
             </li>
           {{/if}}
-        {{else}}
+          {{else}}
           {{#if isLogin}}
             <li class="nav-item">
-              <a class="nav-link active" href="/auth/login#login">Войти</a>
+              <a class="nav-link active" href="/auth/login#login">
+                Войти
+              </a>
             </li>
           {{else}}
             <li class="nav-item">
-              <a class="nav-link" href="/auth/login#login">Войти</a>
+              <a class="nav-link" href="/auth/login#login">
+                Войти
+              </a>
             </li>
           {{/if}}
         {{/if}}
+        
       </ul>
     </div>
   </div>
 </nav>
-{{!-- <nav>
-  <div class="nav-wrapper">
-    <a href="/" class="brand-logo">Магазин товаров</a>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
-
-
-      {{#if isAuth}}
-      {{#if isAdd}}
-      <li class="active"><a href="/add">Добавить товар</a></li>
-      {{else}}
-      <li><a href="/add">Добавить товар</a></li>
-      {{/if}}
-
-      {{#if isOrder}}
-      <li class="active"><a href="/orders">Заказы</a></li>
-      {{else}}
-      <li><a href="/orders">Заказы</a></li>
-      {{/if}}
-
-      {{#if isProfile}}
-      <li class="active"><a href="/profile">Профиль</a></li>
-      {{else}}
-      <li><a href="/profile">Профиль</a></li>
-      {{/if}}
-
-      {{#if isCard}}
-      <li class="active"><a href="/card">Корзина</a></li>
-      {{else}}
-      <li><a href="/card">Корзина</a></li>
-      {{/if}}
-
-      <li><a href="/auth/logout">Выйти</a></li>
-      {{else}}
-      {{#if isLogin}}
-      <li class="active"><a href="/auth/login#login">Войти</a></li>
-      {{else}}
-      <li><a href="/auth/login#login">Войти</a></li>
-      {{/if}}
-      {{/if}}
-
-    </ul>
-  </div>
-</nav> --}}

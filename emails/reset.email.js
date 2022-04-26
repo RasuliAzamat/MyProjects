@@ -10,7 +10,7 @@ module.exports = function (name, email, token) {
             <p>Вы забыли код доступа в свой аккаунт? Если нет, то проигнорируйте это сообщение. Если да, то быстрее перейдите по ссылке ниже и измените пароль</p>
             <p>Изменить пароль - <a href="${keys.BASE_URL}/auth/password/${token}">Клик</a></p>
             <br />
-            <p>Ссылка на сайт - <a href="${keys.BASE_URL}/products">Магазин товаров</a></p>
+            <p>Ссылка на сайт - <a href="${keys.BASE_URL}/projects">Магазин товаров</a></p>
         `,
     }
 }

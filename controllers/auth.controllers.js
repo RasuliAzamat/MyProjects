@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs')
 const crypto = require('crypto')
 const nodemailer = require('nodemailer')
 const sendgrid = require('nodemailer-sendgrid-transport')
-const { body, validationResult } = require('express-validator/check')
+const { validationResult } = require('express-validator')
 const keys = require('../keys')
 const User = require('../models/user.model')
 const regMail = require('../emails/registration.email')
@@ -43,10 +43,12 @@ const postLogin = async (req, res) => {
 
         if (candidate) {
             const areSame = await bcrypt.compare(password, candidate.password)
+            const isAdmin = candidate.IsAdmin
 
             if (areSame) {
                 req.session.user = candidate
                 req.session.isAuthenticated = true
+                req.session.isAdministrated = isAdmin
                 req.session.save(err => {
                     if (err) throw err
                     else res.redirect('/')
@@ -78,8 +80,13 @@ const postRegister = async (req, res) => {
             return res.status(422).redirect('/auth/login#register')
         }
 
+        let isAdmin = false
+        if (email === 'rasuliazamat@gmail.com') {
+            isAdmin = req.session.isAdministrated = true
+        }
+
         const hashPassword = await bcrypt.hash(password, 10)
-        const user = new User({ name, email, password: hashPassword })
+        const user = new User({ name, email, isAdmin, password: hashPassword })
         await user.save()
 
         req.session.user = user

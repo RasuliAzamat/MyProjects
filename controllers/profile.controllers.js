@@ -27,7 +27,9 @@ const postProdile = async (req, res) => {
 
         Object.assign(user, toChange)
         await user.save()
-        await transporter.sendMail(changeNameMail(user.name, toChange.name, user.email))
+        await transporter.sendMail(
+            changeNameMail(user.name, toChange.name, user.email)
+        )
         res.redirect('/profile')
     } catch (e) {
         console.log(e)
