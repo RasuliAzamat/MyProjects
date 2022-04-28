@@ -12,8 +12,7 @@ const transporter = nodemailer.createTransport(
 
 const getProfile = async (req, res) => {
     res.render('profile', {
-        title: `MyStore | Профиль ${req.user.name}`,
-        isProfile: true,
+        title: `MyProjects | Профиль ${req.user.name}`,
         user: req.user.toObject(),
     })
 }

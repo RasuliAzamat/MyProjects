@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
+
     <style>
         *,
         *::before,
@@ -62,6 +63,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+
         }
 
         .logo {
@@ -339,27 +341,46 @@
                 </ul>
             </div>
         </div>
-        <form action="/profile" method="POST" class="profile form">
-            <h1>Ваш профиль</h1>
+        <form action="/add" method="POST" class="add form">
+            <h1>Add project</h1>
+
+            {{#if error}}
+            <p class="error">{{error}}</p>
+            {{/if}}
 
             <div class="form__item">
-                <div class="form__label">Ваше имя</div>
-                <input type="text" name="name" class="form__input" value="{{ user.name }}" />
+                <div class="form__label">Project name</div>
+                <input type="text" name="name" class="form__input" value="{{ values.name }}" />
             </div>
 
             <div class="form__item">
-                <div class="form__label">Ваш email</div>
-                <input type="email" name="email" class="form__input" disabled value="{{ user.email }}" />
+                <div class="form__label">Project description</div>
+                <input type="text" name="description" class="form__input" value="{{ values.description }}" />
+            </div>
+
+            <div class="form__item">
+                <div class="form__label">Project tags</div>
+                <input type="text" name="tags" class="form__input" value="{{ values.tags }}" />
+            </div>
+
+            <div class="form__item">
+                <div class="form__label">Project demo link</div>
+                <input type="text" name="demo" class="form__input" value="{{ values.demo }}" />
+            </div>
+
+            <div class="form__item">
+                <div class="form__label">Project source link</div>
+                <input type="text" name="source" class="form__input" value="{{ values.source }}" />
             </div>
 
             <input type="hidden" name="_csrf" value="{{ csurf }}">
 
             <div class="form__controls">
-                <button class="button primary">Сохранить изменения</button>
-                <a href="/auth/logout" class="button danger">Выйти из аккаунта</a>
+                <button class="button primary">Add project</button>
             </div>
         </form>
     </div>
+
 </body>
 
 </html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Slider</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>Slider</h1>
+
+            <div class="flex-wrapper">
+                <div class="slider-wrapper">
+                    <div class="slide">
+                        <img
+                            src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80"
+                            alt=""
+                        />
+                    </div>
+                    <div class="slide active">
+                        <img
+                            src="https://images.unsplash.com/photo-1546556402-3302675475bc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80"
+                            alt=""
+                        />
+                    </div>
+                    <div class="slide">
+                        <img
+                            src="https://images.unsplash.com/photo-1488900128323-21503983a07e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
+                            alt=""
+                        />
+                    </div>
+                    <div id="prev-btn"></div>
+                    <div id="next-btn"></div>
+                </div>
+            </div>
+
+            <div class="dots-wrapper">
+                <span class="dot"></span>
+                <span class="dot active"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>

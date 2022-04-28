@@ -1,72 +1,522 @@
-<div class="row">
-    <ul class="nav nav-tabs justify-content-center nav-fill" role="tablist">
-        <li class="nav-item " role="presentation">
-            <a href="#login" class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login"
-                type="button" role="tab" aria-controls="login" aria-selected="true">Войти</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a href="#register" class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register"
-                type="button" role="tab" aria-controls="register" aria-selected="false">Зарегистрирваться</a>
-        </li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane fade show active mt-2" id="login" role="tabpanel" aria-labelledby="login-tab">
-            <form action="/auth/login" method="post">
-                <h1 class="display-5 mb-4">Войти в аккаунт</h1>
-                {{#if loginError}}
-                    <p class="error">{{loginError}}</p>
-                {{/if}}
-                <div class="form-floating mb-3">
-                    <input type="email" id="email" name="email" class="form-control" placeholder="Введите Email">
-                    <label for="email">Email</label>
-                </div>
-                <div class="form-floating mb-3 mt-4">
-                    <input type="password" id="password" name="password" class="form-control"
-                        placeholder="Введите Пароль">
-                    <label for="password">Пароль</label>
-                </div>
+<!DOCTYPE html>
+<html lang="en">
 
-                <input type="hidden" name="_csrf" value="{{csurf}}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
 
-                <p><a href="/auth/reset">Забыли пароль?</a></p>
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
 
-                <button class="btn btn-primary">Войти</button>
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-            </form>
+        ul li {
+            list-style: none;
+        }
+
+        button,
+        input,
+        textarea {
+            font: inherit;
+            border: none;
+            background: none;
+            outline: none;
+        }
+
+        body {
+            color: #222;
+            font: 400 17px/1.25 inherit;
+        }
+
+        .container {
+            max-width: 1064px;
+            padding: 20px;
+            margin: auto;
+        }
+
+        .error {
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: rgba(255, 0, 0, 0.3);
+            color: red;
+        }
+
+        .nav {
+            margin-bottom: 50px;
+        }
+
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+        }
+
+        .nav__list {
+            display: flex;
+        }
+
+        .nav__list--item {
+            margin-right: 20px;
+        }
+
+        .nav__list--item:last-child {
+            margin-right: 0;
+        }
+
+        .nav__list--link {
+            font-size: 1.5rem;
+        }
+
+        .form {
+            width: 100%;
+            height: 500px;
+            padding: 20px 30px;
+            margin: auto;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            background-color: #fafafa;
+            box-shadow: 0px 0px 10px 1px #eee;
+        }
+
+        .form h1 {
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+        }
+
+        .form__item {
+            margin-bottom: 20px;
+        }
+
+        .form__label {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .form__input {
+            width: 100%;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #fff;
+            border: 1px solid #c8c8c8;
+            transition: all 0.1s ease-in-out;
+        }
+
+        .form__input:disabled {
+            pointer-events: none;
+            background-color: #e6e6e6;
+        }
+
+        .form__input:focus,
+        .form__input:active {
+            border-color: #646464;
+            box-shadow: 0px 0px 10px 1px #eee;
+        }
+
+        .form__input:hover {
+            box-shadow: 0px 0px 10px 1px #eee;
+        }
+
+        .form__controls {
+            width: 100%;
+            margin-top: auto;
+            display: flex;
+        }
+
+        .form__controls .button {
+            width: 50%;
+            padding: 15px 0;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.1s ease-in-out;
+        }
+
+        .form__controls .button:first-child {
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+
+        .form__controls .button:last-child {
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        .form__controls .primary {
+            color: #000;
+            background-color: #f0f0f0;
+        }
+
+        .form__controls .primary:hover {
+            background-color: rgba(240, 240, 240, 0.3);
+        }
+
+        .form__controls .danger {
+            color: #fff;
+            background-color: #ff3737;
+        }
+
+        .form__controls .danger:hover {
+            background-color: rgba(255, 55, 55, 0.9);
+        }
+
+        .add.form {
+            height: auto;
+        }
+
+        .form-wrapper {
+            width: 100%;
+            height: 600px;
+            padding: 20px 30px;
+            margin: auto;
+            border-radius: 5px;
+            background-color: #fafafa;
+            box-shadow: 0px 0px 10px 1px #eee;
+        }
+
+        .form-wrapper .form {
+            width: 100%;
+            height: 85%;
+            padding: 20px 30px;
+            display: none;
+            flex-direction: column;
+            background-color: transparent;
+            box-shadow: none;
+        }
+
+        .form-wrapper .form.active {
+            display: flex;
+        }
+
+        .form-wrapper .form__nav {
+            margin-bottom: 30px;
+        }
+
+        .form-wrapper .form__nav a {
+            display: inline-block;
+            opacity: 0.5;
+            cursor: pointer;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+
+        .form__nav a.active {
+            opacity: 1;
+        }
+
+        .form__item {
+            margin-bottom: 20px;
+        }
+
+        .form__label {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .form__input {
+            width: 100%;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #fff;
+            border: 1px solid #c8c8c8;
+            transition: all 0.1s ease-in-out;
+        }
+
+        .form__input:focus,
+        .form__input:active {
+            border-color: #646464;
+            box-shadow: 0px 0px 10px 1px #eee;
+        }
+
+        .form__input:hover {
+            box-shadow: 0px 0px 10px 1px #eee;
+        }
+
+        .form__controls {
+            width: 100%;
+            margin-top: auto;
+            display: flex;
+        }
+
+        .form__controls .button {
+            width: 50%;
+            padding: 15px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.1s ease-in-out;
+        }
+
+        .form__controls .primary {
+            color: #000;
+            background-color: #e6e6e6;
+        }
+
+        .form__controls .primary:hover {
+            background-color: rgba(230, 230, 230, 0.5);
+        }
+
+        .reset {
+            color: rgb(85, 85, 255);
+            border-bottom: 1px solid rgb(85, 85, 255);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .logo {
+                font-size: 1.7rem;
+                letter-spacing: 1.7px;
+            }
+
+            .nav__list--link {
+                font-size: 1.3rem;
+            }
+
+            .form {
+                padding: 10px 20px;
+                height: 450px;
+            }
+
+            .form h1 {
+                margin-bottom: 25px;
+                font-size: 1.5rem;
+            }
+
+            .form__label {
+                font-size: 1.1rem;
+            }
+
+            .form__input {
+                padding: 5px 10px;
+            }
+
+            .form__item {
+                margin-bottom: 15px;
+            }
+
+            .button {
+                padding: 10px 0;
+                font-size: 1.1rem;
+            }
+
+            .form-wrapper {
+                padding: 10px 20px;
+                height: 450px;
+            }
+
+            .form-wrapper .form {
+                padding: 10px 20px;
+            }
+
+            .form-wrapper .form__nav {
+                white-space: nowrap;
+                margin-bottom: 25px;
+            }
+
+            .form-wrapper .form__nav a {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 425px) {
+            .container {
+                padding: 10px;
+            }
+
+            .form {
+                height: 400px;
+                padding: 10px;
+            }
+
+            .form__controls {
+                flex-direction: column;
+            }
+
+            .form__controls .button {
+                width: 100%;
+                font-size: 1rem;
+            }
+
+            .form__controls .button:first-child {
+                border-radius: 0px;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+            }
+
+            .form__controls .button:last-child {
+                border-radius: 0px;
+                border-bottom-left-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+
+            .form-wrapper {
+                padding: 10px;
+            }
+
+            .form-wrapper .form {
+                padding: 5px 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="nav">
+            <div class="nav-flex">
+                <a href="/" class="logo">MyProjects</a>
+                <ul class="nav__list">
+
+                    {{#if isAdmin}}
+                    <li class="nav__list--item">
+                        <a href="/add" class="nav__list--link">Добавить</a>
+                    </li>
+                    {{/if}}
+
+                    {{#if isAuth}}
+                    <li class="nav__list--item">
+                        <a href="/profile" class="nav__list--link">Профиль</a>
+                    </li>
+                    {{else}}
+                    <li class="nav__list--item">
+                        <a href="/auth/login#login" class="nav__list--link">Профиль</a>
+                    </li>
+                    {{/if}}
+
+                </ul>
+            </div>
         </div>
-        <div class="tab-pane fade mt-2" id="register" role="tabpanel" aria-labelledby="register-tab">
-            <form action="/auth/register" method="post">
-                <h1 class="display-5 mb-4">Создать аккаунт</h1>
-                {{#if registerError}}
-                    <p class="error">{{registerError}}</p>
+        <div class="form-wrapper">
+            <div class="form__nav">
+                <a href="/auth/login#login" class="active" data-action="tab" data-tab="login">Войти/</a>
+                <a href="/auth/login#register" data-action="tab" data-tab="register">Зарегаться</a>
+            </div>
+
+            <form action="/auth/login" method="post" class="form active" id="login">
+                {{#if loginError}}
+                <p class="error">{{loginError}}</p>
                 {{/if}}
 
-                <div class="form-floating mb-3">
-                    <input type="text" id="name" name="name" class="form-control" placeholder="Введите ваше Имя">
-                    <label for="name">Имя</label>
+                <div class="form__item">
+                    <div class="form__label">Ваш email</div>
+                    <input type="email" name="email" class="form__input" />
                 </div>
 
-                <div class="form-floating mb-3 mt-4">
-                    <input type="email" id="regEmail" name="email" class="form-control" placeholder="Введите Email">
-                    <label for="regEmail">Email</label>
+                <div class="form__item">
+                    <div class="form__label">Ваш пароль</div>
+                    <input type="password" name="password" class="form__input" />
                 </div>
 
-                <div class="form-floating mb-3 mt-4">
-                    <input type="password" id="regPassword" name="password" class="form-control"
-                        placeholder="Введите Пароль">
-                    <label for="regPassword">Пароль</label>
+                <input type="hidden" name="_csrf" value="{{csurf}}">
+                <p><a class="reset" href="/auth/reset">Забыли пароль?</a></p>
+
+                <div class="form__controls">
+                    <button class="button primary">Войти</button>
+                </div>
+            </form>
+            <form action="/auth/register" method="post" class="form" id="register">
+                {{#if registerError}}
+                <p class="error">{{registerError}}</p>
+                {{/if}}
+
+                <div class="form__item">
+                    <div class="form__label">Введите имя</div>
+                    <input type="text" name="name" class="form__input" />
                 </div>
 
-                <div class="form-floating mb-3 mt-4">
-                    <input type="password" id="confirm" name="confirm" class="form-control"
-                        placeholder="Введите Пароль">
-                    <label for="confirm">Пароль еще раз</label>
+                <div class="form__item">
+                    <div class="form__label">Введите email</div>
+                    <input type="email" name="email" class="form__input" />
+                </div>
+
+                <div class="form__item">
+                    <div class="form__label">Придумайте пароль</div>
+                    <input type="password" name="password" class="form__input" />
+                </div>
+
+                <div class="form__item">
+                    <div class="form__label">Подтвердите пароль</div>
+                    <input type="password" name="confirm" class="form__input" />
                 </div>
 
                 <input type="hidden" name="_csrf" value="{{csurf}}">
 
-                <button class="btn btn-primary">Создать</button>
+                <div class="form__controls">
+                    <button class="button primary">Зарегаться</button>
+                </div>
             </form>
         </div>
     </div>
-</div>
+    <script>
+
+        const tabs = document.querySelectorAll('[data-action="tab"]')
+        const loginForm = document.querySelector('#login')
+        const loginTab = document.querySelector('[data-tab="login"]')
+        const registerForm = document.querySelector('#register')
+        const registerTab = document.querySelector('[data-tab="register"]')
+
+        const deleteteActiveTab = () => tabs.forEach(tab => tab.classList.remove('active'))
+
+        if (window.location.hash === '#login') {
+            loginForm.classList.add('active')
+            loginTab.classList.add('active')
+
+            registerForm.classList.remove('active')
+            registerTab.classList.remove('active')
+        } else if (window.location.hash === '#register') {
+            registerForm.classList.add('active')
+            registerTab.classList.add('active')
+
+            loginForm.classList.remove('active')
+            loginTab.classList.remove('active')
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', event => {
+                if (event.target.dataset.tab === loginForm.id) {
+                    loginForm.classList.add('active')
+                    registerForm.classList.remove('active')
+
+                    window.location.hash = '#login'
+                }
+                if (event.target.dataset.tab === registerForm.id) {
+                    registerForm.classList.add('active')
+                    loginForm.classList.remove('active')
+
+                    window.location.hash = '#register'
+
+                }
+                deleteteActiveTab()
+                tab.classList.add('active')
+            })
+        })
+    </script>
+</body>
+
+</html>

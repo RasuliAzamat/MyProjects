@@ -16,8 +16,7 @@ const transporter = nodemailer.createTransport(
 
 const getLogin = async (req, res) => {
     res.render('auth/login', {
-        title: 'MyStore | Авторизация',
-        isLogin: true,
+        title: 'MyProfile | Авторизация',
         registerError: req.flash('registerError'),
         loginError: req.flash('loginError'),
     })
@@ -31,7 +30,7 @@ const getLogout = async (req, res) => {
 
 const getReset = (req, res) => {
     res.render('auth/reset', {
-        title: 'MyStore | Забыли пароль?',
+        title: 'MyProfile | Забыли пароль?',
         error: req.flash('error'),
     })
 }
@@ -121,7 +120,7 @@ const postReset = async (req, res) => {
                 await transporter.sendMail(
                     resetMail(candidate.name, candidate.email, token)
                 )
-                res.redirect('/auth/login')
+                res.redirect('/auth/login#login')
             } else {
                 req.flash('error', 'Такой email не зарегестрирован.')
                 return res.redirect('/auth/reset')
@@ -134,7 +133,7 @@ const postReset = async (req, res) => {
 
 const getPassword = async (req, res) => {
     if (!req.params.token) {
-        return res.redirect('/auth/login')
+        return res.redirect('/auth/login#login')
     }
 
     try {
@@ -144,10 +143,10 @@ const getPassword = async (req, res) => {
         })
 
         if (!user) {
-            return res.redirect('/auth/login')
+            return res.redirect('/auth/login#register')
         } else {
             res.render('auth/password', {
-                title: 'MyStore | Восстановить пароль',
+                title: 'MyProfile | Восстановить пароль',
                 error: req.flash('error'),
                 userId: user._id.toString(),
                 token: req.params.token,
@@ -168,12 +167,12 @@ const postPassword = async (req, res) => {
 
         if (!user) {
             req.flash('error', 'Ошибка!')
-            return res.redirect('/auth/login')
+            return res.redirect('/auth/login#register')
         } else {
             user.password = await bcrypt.hash(req.body.password, 10)
             user.resetToken = user.resetTokenExp = undefined
             await user.save()
-            res.redirect('/auth/login')
+            res.redirect('/auth/login#login')
         }
     } catch (error) {
         console.log(error)

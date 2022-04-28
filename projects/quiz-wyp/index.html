@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quiz</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="quiz-over-modal">
+            <div class="content">
+                <h3>Good result!</h3>
+                <p>
+                    You answered to <span id="correct-answer"></span> from
+                    <span id="number-of-all-questions-2"></span> questions
+                </p>
+                <button id="btn-try-again">Try again</button>
+            </div>
+        </div>
+        <div class="container">
+            <h1>Quiz</h1>
+            <div class="quiz-container">
+                <h3>
+                    Question <span id="number-of-question"></span> from
+                    <span id="number-of-all-questions"></span>
+                </h3>
+                <div id="question"></div>
+                <div class="options">
+                    <div class="option option1" data-id="1"></div>
+                    <div class="option option2" data-id="2"></div>
+                    <div class="option option3" data-id="3"></div>
+                    <div class="option option4" data-id="4"></div>
+                </div>
+                <div class="button">
+                    <div id="btn-next">Next</div>
+                </div>
+                <div id="answers-tracker"></div>
+            </div>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>

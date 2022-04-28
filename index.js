@@ -8,7 +8,7 @@ const flash = require('connect-flash')
 const MongoStore = require('connect-mongodb-session')(session)
 
 const homeRoutes = require('./routes/home.routes')
-// const addRoutes = require('./routes/add.routes')
+const addRoutes = require('./routes/add.routes')
 const authRoutes = require('./routes/auth.routes')
 const profileRoutes = require('./routes/profile.routes')
 
@@ -54,6 +54,7 @@ app.use(userMiddleware)
 
 app.use('/', homeRoutes)
 app.use('/auth', authRoutes)
+app.use('/add', addRoutes)
 app.use('/profile', profileRoutes)
 app.use(errorMiddleware)
 

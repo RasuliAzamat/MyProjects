@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-tac-toe game</title>
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 1064px;
+            padding: 20px;
+            margin: auto;
+        }
+
+        body {
+            font: 400 20px/1.25 Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+
+            margin-bottom: 20px;
+
+            font: 500 40px/1.25 Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        .area-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .area {
+            display: flex;
+            flex-wrap: wrap;
+
+            width: 300px;
+            height: 300px;
+
+            background-color: blanchedalmond;
+        }
+
+        .box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+
+            color: brown;
+            font: 500 40px/1.25 Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        #modal-wrapper {
+            display: none;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+        }
+
+        #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        #modal-window {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+
+            text-align: center;
+
+            width: 50%;
+            height: 10%;
+            border: 1px solid black;
+            border-radius: 10px;
+
+            background-color: #fff;
+        }
+
+        #content {
+            padding: 20px;
+        }
+
+        #btn-close {
+            width: 100%;
+            padding: 10px;
+            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+
+            cursor: pointer;
+            text-align: center;
+
+            color: white;
+            background-color: tomato;
+        }
+
+        @media (max-width: 425px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+            .area {
+                width: 150px;
+                height: 150px;
+            }
+
+            .box {
+                width: 50px;
+                height: 50px;
+                font-size: 30px;
+            }
+
+            #content {
+                padding: 10px;
+            }
+
+            #btn-close {
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Tic-Tac-Toe</h1>
+
+        <div class="area-wrapper">
+            <div class="area" id="area">
+                <div class="box"></div>
+                <div class="box"></div>
+                <div class="box"></div>
+                <div class="box"></div>
+                <div class="box"></div>
+                <div class="box"></div>
+                <div class="box"></div>
+                <div class="box"></div>
+                <div class="box"></div>
+            </div>
+        </div>
+
+        <div id="modal-wrapper">
+            <div id="overlay"></div>
+            <div id="modal-window">
+                <div id="content">Content</div>
+                <div id="btn-close">Start new game</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const area = document.getElementById('area')
+        const overlay = document.getElementById('overlay')
+        const contentPlace = document.getElementById('content')
+        const btnCLose = document.getElementById('btn-close')
+        const modalWrapper = document.getElementById('modal-wrapper')
+        let move = 0
+        let result = ''
+
+        const showResult = winner => {
+            contentPlace.textContent = `The winner is - ${winner}`
+            modalWrapper.style.display = 'block'
+
+            btnCLose.onclick = overlay.onclick = () => {
+                modalWrapper.style.display = 'none'
+                location.reload()
+            }
+        }
+
+        const check = () => {
+            const boxes = document.querySelectorAll('.box')
+            const variants = [
+                // horizontal
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+
+                // vertical
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+
+                // diagonal
+                [0, 4, 8],
+                [2, 4, 6],
+            ]
+
+            for (let index = 0; index < variants.length; index++) {
+                const variant = variants[index]
+
+                if (
+                    boxes[variant[0]].textContent === 'x' &&
+                    boxes[variant[1]].textContent === 'x' &&
+                    boxes[variant[2]].textContent === 'x'
+                ) {
+                    result = 'X'
+                    showResult(result)
+                } else if (
+                    boxes[variant[0]].textContent === 'o' &&
+                    boxes[variant[1]].textContent === 'o' &&
+                    boxes[variant[2]].textContent === 'o'
+                ) {
+                    result = 'O'
+                    showResult(result)
+                }
+            }
+        }
+
+        area.addEventListener('click', event => {
+            const target = event.target
+
+            if (target.classList.contains('box')) {
+                if (move % 2 === 0) {
+                    target.textContent = 'x'
+                } else {
+                    target.textContent = 'o'
+                }
+
+                move++
+                check()
+            }
+        })
+
+    </script>
+</body>
+
+</html>
