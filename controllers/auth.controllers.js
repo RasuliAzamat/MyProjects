@@ -6,6 +6,7 @@ const { validationResult } = require('express-validator')
 const keys = require('../keys')
 const User = require('../models/user.model')
 const regMail = require('../emails/registration.email')
+const newUserMail = require('../emails/newUser.email')
 const resetMail = require('../emails/reset.email')
 
 const transporter = nodemailer.createTransport(
@@ -80,7 +81,7 @@ const postRegister = async (req, res) => {
         }
 
         let isAdmin = false
-        if (email === 'rasuliazamat@gmail.com') {
+        if (email === keys.EMAIL_FROM) {
             isAdmin = req.session.isAdministrated = true
         }
 
@@ -95,6 +96,7 @@ const postRegister = async (req, res) => {
             else res.redirect('/')
         })
         await transporter.sendMail(regMail(name, email))
+        await transporter.sendMail(newUserMail(req.body))
     } catch (error) {
         console.log(error)
     }
