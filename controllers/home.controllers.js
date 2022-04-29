@@ -3,6 +3,7 @@ const Project = require('../models/project.model')
 const getHome = async (req, res) => {
     try {
         const projects = await Project.find()
+            .sort({ createdAt: -1 })
             .populate('userId', 'email name')
             .select('name description tags demo source')
 
@@ -20,4 +21,32 @@ const getTicTacToeWyp = (req, res) => {
     res.render('projects/tic-tac-toe-wyp')
 }
 
-module.exports = { getHome, getTicTacToeWyp }
+const getCurrencyConverter = (req, res) => {
+    res.render('projects/currency-converter')
+}
+
+const getNotesBoxes = (req, res) => {
+    res.render('projects/notes-boxes')
+}
+
+const getOnlineTranslator = (req, res) => {
+    res.render('projects/online-translator')
+}
+
+const getQuizWyp = (req, res) => {
+    res.render('projects/quiz-wyp')
+}
+
+const getTodoListCdn = (req, res) => {
+    res.render('projects/todo-list-cdn')
+}
+
+module.exports = {
+    getHome,
+    getTicTacToeWyp,
+    getCurrencyConverter,
+    getNotesBoxes,
+    getOnlineTranslator,
+    getQuizWyp,
+    getTodoListCdn,
+}

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+    <style>
+        :root {
+            --blue-color: rgb(96, 153, 203);
+            --white-color: aliceblue;
+            --ffamily: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 1064px;
+            padding: 20px;
+            margin: auto;
+        }
+
+        body {
+            background-color: var(--blue-color);
+            font: 400 20px/1.25 var(--ffamily);
+        }
+
+        h1 {
+            text-align: center;
+
+            margin-bottom: 20px;
+
+            color: var(--white-color);
+            font: 500 40px/1.25 var(--ffamily);
+        }
+
+        .quiz-container {
+            width: 70%;
+            padding: 20px;
+            margin: 0 auto;
+            border-radius: 20px;
+
+            background-color: var(--white-color);
+            box-shadow: 0px 0px 5px 1px var(--white-color);
+        }
+
+        .quiz-container h3 {
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            border-bottom: 3px solid var(--blue-color);
+
+            font: bold 15px/1.25 var(--ffamily);
+            color: var(--blue-color);
+        }
+
+        #question {
+            font: 500 22px/1.25 var(--ffamily);
+        }
+
+        .options {
+            margin: 10px 0;
+        }
+
+        .option {
+            margin-bottom: 5px;
+            padding: 5px 10px;
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            color: white;
+            background-color: rgba(96, 153, 203, 0.5);
+
+            transition: all 0.1s ease-in-out;
+        }
+
+        .option.active {
+            background-color: rgba(96, 153, 203, 1);
+        }
+
+        .option.correct {
+            background-color: green;
+        }
+
+        .option.wrong {
+            background-color: red;
+        }
+
+        .option.disabled {
+            pointer-events: none;
+        }
+
+        .option:hover {
+            background-color: rgba(96, 153, 203, 1);
+        }
+
+        .option:last-child {
+            margin-bottom: 0;
+        }
+
+        #btn-next {
+            display: inline-block;
+            padding: 5px 30px;
+            border-radius: 10px;
+
+            color: var(--white-color);
+            background-color: rgba(96, 153, 203, 1);
+
+            cursor: pointer;
+
+            transition: all 0.3s ease-in-out;
+        }
+
+        #btn-next:hover {
+            background-color: rgba(96, 153, 203, 0.8);
+        }
+
+        .button {
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            border-bottom: 3px solid var(--blue-color);
+        }
+
+        #answers-tracker div {
+            display: inline-block;
+
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 5px;
+
+            background-color: rgba(96, 153, 203, 0.3);
+        }
+
+        #answers-tracker div.correct {
+            background-color: green;
+        }
+
+        #answers-tracker div.wrong {
+            background-color: red;
+        }
+
+        .quiz-over-modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            width: 100%;
+            height: 100%;
+
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .quiz-over-modal.active {
+            display: flex;
+        }
+
+        .content {
+            width: 50vw;
+            padding: 20px;
+            border-radius: 20px;
+
+            text-align: center;
+
+            color: var(--blue-color);
+            background-color: var(--white-color);
+        }
+
+        .content p {
+            margin-bottom: 10px;
+        }
+
+        #btn-try-again {
+            display: inline-block;
+            padding: 7px 50px;
+            border-radius: 10px;
+
+            font: inherit;
+            color: var(--white-color);
+            background-color: rgba(96, 153, 203, 1);
+
+            cursor: pointer;
+            border: none;
+
+            transition: all 0.3s ease-in-out;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-container {
+                width: 100%;
+            }
+
+            .content {
+                width: 90vw;
+            }
+        }
+
+        @media (max-width: 425px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="quiz-over-modal">
+        <div class="content">
+            <h3>Good result!</h3>
+            <p>
+                You answered to <span id="correct-answer"></span> from
+                <span id="number-of-all-questions-2"></span> questions
+            </p>
+            <button id="btn-try-again">Try again</button>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Quiz</h1>
+        <div class="quiz-container">
+            <h3>
+                Question <span id="number-of-question"></span> from
+                <span id="number-of-all-questions"></span>
+            </h3>
+            <div id="question"></div>
+            <div class="options">
+                <div class="option option1" data-id="1"></div>
+                <div class="option option2" data-id="2"></div>
+                <div class="option option3" data-id="3"></div>
+                <div class="option option4" data-id="4"></div>
+            </div>
+            <div class="button">
+                <div id="btn-next">Next</div>
+            </div>
+            <div id="answers-tracker"></div>
+        </div>
+    </div>
+    <script>
+        const options = document.querySelectorAll('.option')
+
+        const option1 = document.querySelector('.option1')
+        const option2 = document.querySelector('.option2')
+        const option3 = document.querySelector('.option3')
+        const option4 = document.querySelector('.option4')
+
+        const question = document.getElementById('question')
+        const numberOfQuestion = document.getElementById('number-of-question')
+        const numberOfAllQuestions = document.getElementById('number-of-all-questions')
+
+        const correctAnswer = document.getElementById('correct-answer')
+        const numberOfAllQuestions2 = document.getElementById('number-of-all-questions-2')
+        const btnTryAgain = document.getElementById('btn-try-again')
+
+        const btnNext = document.getElementById('btn-next')
+        const answerTrackers = document.getElementById('answers-tracker')
+
+        let indexOfQuestion = indexOfPage = score = 0
+
+
+        const questions = [
+            {
+                question: 'What is JavaScript?',
+                options: [
+                    'Food name',
+                    'Capital of Shompania',
+                    'Programming language',
+                    'Long version of Java',
+                ],
+                right: 3,
+            },
+            {
+                question: 'Where do we usually use JavaScript?',
+                options: [
+                    'In the kitchen',
+                    'On the holiday',
+                    'In the party',
+                    'In the browser',
+                ],
+                right: 4,
+            },
+            {
+                question: 'How we can assign variable in JavaScript?',
+                options: [
+                    'var, let',
+                    'const, let, var',
+                    'int, str',
+                    'variable'
+                ],
+                right: 2,
+            },
+            {
+                question: "What is server side JavaScript' name?",
+                options: [
+                    'ServerJavaSctip.js',
+                    'Node.js',
+                    'Server.js',
+                    'Hell.js'
+                ],
+                right: 2,
+            },
+            {
+                question: 'How many editions has ECMAScript?',
+                options: [
+                    'What is EcmaScript?',
+                    '-50',
+                    '42',
+                    '12'
+                ],
+                right: 4,
+            },
+        ]
+
+        numberOfAllQuestions.textContent = questions.length
+
+        const load = () => {
+            question.textContent = questions[indexOfQuestion].question
+
+            option1.textContent = questions[indexOfQuestion].options[0]
+            option2.textContent = questions[indexOfQuestion].options[1]
+            option3.textContent = questions[indexOfQuestion].options[2]
+            option4.textContent = questions[indexOfQuestion].options[3]
+
+            numberOfQuestion.textContent = indexOfPage + 1
+
+            indexOfPage++
+        }
+
+        let complatedAnswers = []
+
+        const randomQuestion = () => {
+            let randomNumber = Math.floor(Math.random() * questions.length)
+            let isDuplicate = false
+
+            if (indexOfPage == questions.length) {
+                gameOver()
+            } else {
+                if (complatedAnswers.length > 0) {
+                    complatedAnswers.forEach(answer => {
+                        if (answer == randomNumber) {
+                            isDuplicate = true
+                        }
+                    })
+                    if (isDuplicate) {
+                        randomQuestion()
+                    } else {
+                        indexOfQuestion = randomNumber
+                        load()
+                    }
+                }
+                if (complatedAnswers == 0) {
+                    indexOfQuestion = randomNumber
+                    load()
+                }
+            }
+            complatedAnswers.push(indexOfQuestion)
+        }
+
+        const checkAnswer = event => {
+            if (event.target.dataset.id == questions[indexOfQuestion].right) {
+                event.target.classList.add('correct')
+                updateAnswerTracker('correct')
+                score++
+            } else {
+                event.target.classList.add('wrong')
+                updateAnswerTracker('wrong')
+            }
+            disableOptions()
+        }
+
+        const disableOptions = () => {
+            options.forEach(option => {
+                option.classList.add('disabled')
+
+                if (option.dataset.id == questions[indexOfQuestion].right) {
+                    option.classList.add('correct')
+                }
+            })
+        }
+
+        const resetClasses = () => {
+            options.forEach(option => {
+                option.classList.remove('disabled', 'correct', 'wrong')
+            })
+        }
+
+        const answerTracker = () => {
+            questions.forEach(() => {
+                const div = document.createElement('div')
+                answerTrackers.appendChild(div)
+            })
+        }
+
+        const updateAnswerTracker = status => {
+            answerTrackers.children[indexOfPage - 1].classList.add(status)
+        }
+
+        const validate = () => {
+            if (options[0].classList.contains('disabled')) {
+                resetClasses()
+                randomQuestion()
+            } else {
+                alert('Choose 1 answer at list')
+            }
+        }
+
+        btnNext.addEventListener('click', validate)
+
+        options.forEach(option => {
+            option.addEventListener('click', event => checkAnswer(event))
+        })
+
+        const gameOver = () => {
+            const modal = document.querySelector('.quiz-over-modal')
+            modal.classList.add('active')
+
+            correctAnswer.textContent = score
+            numberOfAllQuestions2.textContent = questions.length
+        }
+
+        const tryAgain = () => window.location.reload()
+
+        btnTryAgain.addEventListener('click', tryAgain)
+
+        window.addEventListener('load', () => {
+            randomQuestion()
+            answerTracker()
+        })
+
+    </script>
+</body>
+
+</html>

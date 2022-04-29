@@ -1,5 +1,4 @@
 const Project = require('../models/project.model')
-// const { validationResult } = require('express-validator')
 
 const getAdd = (req, res) => {
     res.render('add', {
@@ -8,22 +7,6 @@ const getAdd = (req, res) => {
 }
 
 const postAdd = async (req, res) => {
-    // const errors = validationResult(req)
-
-    // if (!errors.isEmpty()) {
-    //     return res.status(422).render('add', {
-    //         title: 'MyProjects | Добавить проект',
-    //         error: errors.array()[0].msg,
-    //         values: {
-    //             name: req.body.name,
-    //             description: req.body.description,
-    //             tags: req.body.tags,
-    //             demo: req.body.demo,
-    //             source: req.body.source,
-    //         },
-    //     })
-    // }
-
     const project = new Project({
         name: req.body.name,
         description: req.body.description,
