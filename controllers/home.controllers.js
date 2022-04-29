@@ -41,6 +41,14 @@ const getTodoListCdn = (req, res) => {
     res.render('projects/todo-list-cdn')
 }
 
+const get2048 = (req, res) => {
+    res.render('projects/2048')
+}
+
+const getTicTacToeCdn = (req, res) => {
+    res.render('projects/tic-tac-toe-cdn')
+}
+
 module.exports = {
     getHome,
     getTicTacToeWyp,
@@ -49,4 +57,6 @@ module.exports = {
     getOnlineTranslator,
     getQuizWyp,
     getTodoListCdn,
+    get2048,
+    getTicTacToeCdn,
 }

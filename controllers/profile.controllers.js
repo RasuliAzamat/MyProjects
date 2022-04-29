@@ -20,6 +20,11 @@ const postProdile = async (req, res) => {
     try {
         const user = await User.findById(req.user._id)
 
+        const userNames = {
+            oldName: user.name,
+            newName: req.body.name,
+        }
+
         const toChange = {
             name: req.body.name,
         }
@@ -27,7 +32,7 @@ const postProdile = async (req, res) => {
         Object.assign(user, toChange)
         await user.save()
         await transporter.sendMail(
-            changeNameMail(user.name, toChange.name, user.email)
+            changeNameMail(userNames.oldName, userNames.newName, user.email)
         )
         res.redirect('/profile')
     } catch (e) {
