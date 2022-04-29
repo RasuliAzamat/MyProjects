@@ -96,7 +96,7 @@ const postRegister = async (req, res) => {
             else res.redirect('/')
         })
         await transporter.sendMail(regMail(name, email))
-        await transporter.sendMail(newUserMail(req.body))
+        await transporter.sendMail(newUserMail(name, email))
     } catch (error) {
         console.log(error)
     }
